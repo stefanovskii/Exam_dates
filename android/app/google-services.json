@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "117650384257",
+    "project_id": "praxis-backup-391009",
+    "storage_bucket": "praxis-backup-391009.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117650384257:android:f48e5024966672ac773480",
+        "android_client_info": {
+          "package_name": "com.example"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "117650384257-q5lumflh5a0miqdsrsm796ci8p9ccp0q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDYFhq9bWCAHceVHRYEyEx62wgLcO6nGo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "117650384257-q5lumflh5a0miqdsrsm796ci8p9ccp0q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

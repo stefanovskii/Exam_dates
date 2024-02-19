@@ -7,8 +7,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'calendar_widget.dart';
-import 'exam_widget.dart';
 import 'notification_controller.dart';
+import 'map_widget.dart';
+import 'notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,6 +65,8 @@ class MainListScreenState extends State<MainListScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final List<Exam> exams = [];
 
+  bool _isLocationBasedNotificationsEnabled = false;
+
   @override
   void initState() {
     super.initState();
@@ -75,7 +78,9 @@ class MainListScreenState extends State<MainListScreen> {
         NotificationController.onNotificationCreateMethod,
         onNotificationDisplayedMethod:
         NotificationController.onNotificationDisplayed);
-    _scheduleNotificationsForExistingExams();
+
+    NotificationService().scheduleNotificationsForExistingExams(exams);
+
   }
 
   void _scheduleNotificationsForExistingExams() {
@@ -110,6 +115,39 @@ class MainListScreenState extends State<MainListScreen> {
     );
   }
 
+  void _toggleLocationNotifications() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Location Based Notifications"),
+          content: _isLocationBasedNotificationsEnabled
+              ? const Text("You have turned off location-based notifications")
+              : const Text("You have turned on location-based notifications"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                NotificationService().toggleLocationNotification();
+                setState(() {
+                  _isLocationBasedNotificationsEnabled =
+                  !_isLocationBasedNotificationsEnabled;
+                });
+                Navigator.pop(context);
+              },
+              child: const Text("OK"),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void _openMap() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const MapWidget()));
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -117,6 +155,14 @@ class MainListScreenState extends State<MainListScreen> {
       appBar: AppBar(
         title: const Text('Exams'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.alarm_add),
+            color: _isLocationBasedNotificationsEnabled
+                ? Colors.amberAccent
+                : Colors.grey,
+            onPressed: _toggleLocationNotifications,
+          ),
+          IconButton(onPressed: _openMap, icon: const Icon(Icons.map)),
           IconButton(
             icon: const Icon(Icons.calendar_month),
             onPressed: _openCalendar,
